@@ -104,8 +104,8 @@
                                 <li><a href="#">Subtotal <span>$2160.00</span></a></li>
                                 <li><a href="#">Total <span>$2210.00</span></a></li>
                             </ul>
-                           
-                            <a class="primary-btn" href="#">Proceed to Paypal</a>
+
+                            <a class="primary-btn" href="#">Proceed</a>
                         </div>
                     </div>
                 </div>
