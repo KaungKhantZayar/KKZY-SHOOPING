@@ -23,7 +23,7 @@ include 'header.php';
       $name = $_POST['name'];
       $description = $_POST['description'];
 
-      $stmt = $pdo->prepare("");
+      $stmt = $pdo->prepare("UPDATE categories SET name=:name, description=:description");
 
       $result = $stmt->execute(
         array(':name'=>$name, ':description'=>$description)
