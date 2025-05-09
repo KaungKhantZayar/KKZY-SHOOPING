@@ -20,24 +20,25 @@ include 'header.php';
         $descError = 'Description is required';
       }
     }else {
+      $id = $_POST['id'];
       $name = $_POST['name'];
       $description = $_POST['description'];
 
-      $stmt = $pdo->prepare("UPDATE categories SET name=:name, description=:description");
+      $stmt = $pdo->prepare("UPDATE categories SET name=:name, description=:description WHERE id=:id");
 
       $result = $stmt->execute(
-        array(':name'=>$name, ':description'=>$description)
+        array(':name'=>$name, ':description'=>$description, ':id'=>$id)
       );
 
       if ($result) {
-        echo "<script>swal('Successfull', 'Your Edit is Successfull!', 'success');</script>";
-        // echo "<script>window.Location.href='category.php';</script>";
+        echo "<script>alert('Category Updated');window.location.href='category.php'</script>";
       }
     }
   }
 
   $stmt = $pdo->prepare("SELECT * FROM categories WHERE id=".$_GET['id']);
   $stmt->execute();
+
   $result = $stmt->fetchAll();
 
  ?>
@@ -49,7 +50,7 @@ include 'header.php';
        <div class="col-md-6 mt-5" style="margin-left:280px;">
          <div class="card p-4">
            <h3>Edit Add Page</h3>
-           <form class="" action="cat_add.php" method="post">
+           <form class="" action="cat_edit.php" method="post">
              <!-- <input name="_token" type="" value="<?= $_SESSION['_token']; ?>"> -->
              <input type="hidden" name="id" value="<?php echo escape($result[0]['id']);?>">
 

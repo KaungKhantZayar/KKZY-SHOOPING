@@ -30,8 +30,10 @@ include 'header.php';
       );
 
       if ($result) {
-        echo "<script>swal('Successfull', 'Your Create is Successfull!', 'success');</script>";
-        // echo "<script>window.Location.href='category.php';</script>";
+        // echo "<script>swal('Successfull', 'Your Create is Successfull!', 'success');</script>";
+        // echo "<script>alert('Your Create is Successfull!');window.Location.href='category.php';</script>";
+        echo "<script>alert('Successfuly added');window.location.href='category.php'</script>";
+
       }
     }
   }

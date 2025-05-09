@@ -86,7 +86,7 @@ if ($_SESSION['role'] != 1) {
                     <a href="cat_edit.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-warning">Edit</a>
                     </div>
                     <div class="contaienr">
-                    <a href="cat_delete.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-danger"  onclick="return confirm('Are you sure you want to logout?');">Delete</a>
+                    <a href="cat_delete.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-danger"  onclick="return confirm('Are you sure you want to Delete?');">Delete</a>
                     </div>
                   </div>
                 </td>
