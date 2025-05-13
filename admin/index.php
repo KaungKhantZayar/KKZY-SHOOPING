@@ -79,18 +79,16 @@ if ($_SESSION['role'] != 1) {
                 if ($result) {
                   $i = 1;
                   foreach ($result as $value) {?>
-
                     <?php
-                      $catstmt = $pdo->prepare("SELECT * FROM products WHERE id=".$value['category_id']);
-                      $catstmt->execute();
-                      $catresult = $catstmt->fetchAll();
-                      $value['category_id']
+                      $stmt = $pdo->prepare("SELECT * FROM categories WHERE id=".$value['category_id']);
+                      $stmt->execute();
+                      $result = $stmt->fetchAll();
                      ?>
               <tr>
                 <td><?php echo $i;?></td>
                 <td><?php echo escape($value['name']);?></td>
                 <td><?php echo escape(substr($value['description'],0,30));?></td>
-                <td><?php echo escape($catresult[0]['name']);?></td>
+                <td><?php echo escape($result[0]['name']);?></td>
                 <td><?php echo escape($value['quantity']);?></td>
                 <td><?php echo escape($value['price']);?></td>
                 <td>
