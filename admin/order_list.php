@@ -18,7 +18,7 @@ if ($_SESSION['role'] != 1) {
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Product Listings</h3>
+          <h3 class="card-title">Order Listings</h3>
         </div>
 
         <?php
@@ -31,46 +31,31 @@ if ($_SESSION['role'] != 1) {
              $numOfrecs = 3;
              $offset = ($pageno - 1) * $numOfrecs;
 
-             if (empty($_POST['search'])) {
-               $stmt = $pdo->prepare("SELECT * FROM products ORDER BY id  DESC");
-               $stmt->execute();
-               $rawResult = $stmt->fetchAll();
+             $stmt = $pdo->prepare("SELECT * FROM sale_orders ORDER BY id  DESC");
+             $stmt->execute();
+             $rawResult = $stmt->fetchAll();
 
-               $total_pages = ceil(count($rawResult) / $numOfrecs);
+             $total_pages = ceil(count($rawResult) / $numOfrecs);
 
-               $stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC LIMIT $offset,$numOfrecs");
-               $stmt->execute();
-               $result = $stmt->fetchAll();
-             }else {
-               $searchKey = $_POST['search'];
-               $stmt = $pdo->prepare("SELECT * FROM products WHERE name LIKE '%$searchKey%' ORDER BY id  DESC");
-               $stmt->execute();
-               $rawResult = $stmt->fetchAll();
-
-               $total_pages = ceil(count($rawResult) / $numOfrecs);
-
-               $stmt = $pdo->prepare("SELECT * FROM products WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs");
-               $stmt->execute();
-               $result = $stmt->fetchAll();
-             }
+             $stmt = $pdo->prepare("SELECT * FROM sale_orders ORDER BY id DESC LIMIT $offset,$numOfrecs");
+             $stmt->execute();
+             $result = $stmt->fetchAll();
 
              ?>
 
         <!-- /.card-header -->
         <div class="card-body">
           <div class="" style="margin-left:900px;">
-            <a href="product_add.php" type="button" class="btn btn-success">Create New Product</a>
+            <a href="#" type="button" class="btn btn-success">New Order</a>
           </div>
 
           <table class="table table-bordered mt-4 table-hover">
             <thead>
               <tr>
                 <th style="width: 10px">#</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>In Stock</th>
-                <th>Price</th>
+                <th>User</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
                 <th style="width:40px;">Actions</th>
               </tr>
             </thead>
@@ -79,25 +64,22 @@ if ($_SESSION['role'] != 1) {
                 if ($result) {
                   $i = 1;
                   foreach ($result as $value) {?>
+
                     <?php
-                      $stmt = $pdo->prepare("SELECT * FROM categories WHERE id=".$value['category_id']);
-                      $stmt->execute();
-                      $result = $stmt->fetchAll();
+                      $userStmt = $pdo->prepare("SELECT * FROM users WHERE id=".$value['user_id']);
+                      $userStmt->execute();
+                      $userResult = $userStmt->fetchAll();
                      ?>
+
               <tr>
                 <td><?php echo $i;?></td>
-                <td><?php echo escape($value['name']);?></td>
-                <td><?php echo escape(substr($value['description'],0,30));?></td>
-                <td><?php echo escape($result[0]['name']);?></td>
-                <td><?php echo escape($value['quantity']);?></td>
-                <td><?php echo escape($value['price']);?></td>
+                <td><?php echo escape($userResult[0]['name']);?></td>
+                <td><?php echo escape($value['total_price']);?></td>
+                <td><?php echo escape(date('Y-m-d',strtotime($value['order_date'])));?></td>
                 <td>
                   <div class="btn-group">
                     <div class="container">
-                    <a href="product_edit.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-warning">Edit</a>
-                    </div>
-                    <div class="contaienr">
-                    <a href="product_delete.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-danger"  onclick="return confirm('Are you sure you want to Delete?');">Delete</a>
+                    <a href="order_detail.php?id=<?php echo $value['id'];?>" type="button" class="btn btn-success">View</a>
                     </div>
                   </div>
                 </td>
