@@ -34,6 +34,7 @@ include 'header.php';
       }
     }else {
       if ($_FILES['image']['name'] != null) {
+
         $file = 'images/'.($_FILES['image']['name']);
         $imageType = pathinfo($file,PATHINFO_EXTENSION);
 
@@ -46,10 +47,11 @@ include 'header.php';
           $qty = $_POST['quantity'];
           $price = $_POST['price'];
           $image = $_FILES['image']['name'];
+          $id = $_GET['id'];
 
           move_uploaded_file($_FILES['image']['tmp_name'],$file);
 
-          $stmt = $pdo->prepare("UPDATE products SET name=:name,description=:description,category_id=:category,price=:price,quantity=:quantity,image=:image");
+          $stmt = $pdo->prepare("UPDATE products SET name=:name,description=:description,category_id=:category,price=:price,quantity=:quantity,image=:image WHERE id='$id'");
 
           $result = $stmt->execute(
             array(':name'=>$name, ':description'=>$desc, ':category'=>$category, ':price'=>$price, ':quantity'=>$qty, ':image'=>$image)
@@ -60,13 +62,14 @@ include 'header.php';
           }
         }
       }else {
+
           $name = $_POST['name'];
           $desc = $_POST['description'];
           $category = $_POST['category'];
           $qty = $_POST['quantity'];
           $price = $_POST['price'];
-
-          $stmt = $pdo->prepare("UPDATE products SET name=:name,description=:description,category_id=:category,price=:price,quantity=:quantity");
+          $id = $_GET['id'];
+          $stmt = $pdo->prepare("UPDATE products SET name=:name,description=:description,category_id=:category,price=:price,quantity=:quantity WHERE id='$id'");
 
           $result = $stmt->execute(
             array(':name'=>$name,':description'=>$desc,':category'=>$category,':price'=>$price,':quantity'=>$qty)
@@ -114,11 +117,7 @@ include 'header.php';
                <select name="category" class="form-control">
                  <option value="">SELECT CATEGORY</option>
                  <?php foreach ($catResult as $value) {?>
-                   <?php if ($value['id'] == $result[0]['category_id']) : ?>
-                      <option value="<?php echo $value['id'];?>" selected><?php echo $value['name'];?></option>
-                   <?else ?>
-                      <!-- <option value="<?php echo $value['id'];?>"><?php echo $value['name'];?></option> -->
-                 <?php endif?>
+                   <option value="<?php echo $value['id']; ?>" <?php if($value['id'] == $result[0]['category_id']){ echo "selected"; } ?>><?php echo $value['name'] ?></option>
                  <?php } ?>
                </select>
                <label for="pwd">Category</label><p style="color:red;"><?php echo empty($catError) ? '' : '*'.$catError; ?></p>
@@ -135,7 +134,7 @@ include 'header.php';
              </div>
 
              <div class="form-floating mb-3 mt-3">
-               <input type="file" class="form-control">
+               <input type="file" class="form-control" name="image">
                <img src="images/<?php echo escape($result[0]['image']); ?>" alt="" width="150" height="150">
                <label for=""><b>Image</b></label><p style="color:red;"></p>
              </div>

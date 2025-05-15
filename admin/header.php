@@ -48,27 +48,31 @@
       $page = end($link_array);
 
      ?>
-    <form class="form-inline ml-3" method="post"
 
-    <?php if($page == 'product.php') :?>
-      action="index.php"
-    <?php elseif($page == 'category.php'):?>
-      action="category.php"
-    <?php elseif($page == 'user_list.php'):?>
-      action="user_list.php"
-    <?php endif; ?>
-    >
-      <!-- <input name="_token" type="hidden" value="<?php //echo $_SESSION['_token'];//?>"> -->
+     <?php if ($page != 'order_list.php') {?> 
+       <form class="form-inline ml-3" method="post"
 
-      <div class="input-group input-group-sm">
-        <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
+       <?php if($page == 'product.php') :?>
+         action="index.php"
+       <?php elseif($page == 'category.php'):?>
+         action="category.php"
+       <?php elseif($page == 'user_list.php'):?>
+         action="user_list.php"
+       <?php endif; ?>
+       >
+         <!-- <input name="_token" type="hidden" value="<?php //echo $_SESSION['_token'];//?>"> -->
+
+         <div class="input-group input-group-sm">
+           <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+           <div class="input-group-append">
+             <button class="btn btn-navbar" type="submit">
+               <i class="fas fa-search"></i>
+             </button>
+           </div>
+         </div>
+       </form>
+     <?php } ?>
+
   </nav>
   <!-- /.navbar -->
 
@@ -132,9 +136,8 @@
           </li>
           <li class="nav-item">
             <a href="order_list.php" class="nav-link">
-              <svg style="margin-left:6px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-table ms-2" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
               </svg>
               <p style="margin-left:8px;">
                 Order

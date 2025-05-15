@@ -40,13 +40,12 @@ if ($_SESSION['role'] != 1) {
              $stmt = $pdo->prepare("SELECT * FROM sale_order_detail WHERE sale_order_id=".$_GET['id']." LIMIT $offset,$numOfrecs");
              $stmt->execute();
              $result = $stmt->fetchAll();
-
              ?>
 
         <!-- /.card-header -->
         <div class="card-body">
-          <div class="" style="margin-left:900px;">
-            <!-- <a href="#" type="button" class="btn btn-success">New Order</a> -->
+          <div class="" style="margin-left:1000px;">
+            <a href="order_list.php" type="button" class="btn btn-danger">Back</a>
           </div>
 
           <table class="table table-bordered mt-4 table-hover">
@@ -56,15 +55,13 @@ if ($_SESSION['role'] != 1) {
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Order Date</th>
-                <!-- <th style="width:40px;">Actions</th> -->
               </tr>
             </thead>
             <tbody>
               <?php
                 if ($result) {
                   $i = 1;
-                  foreach ($result as $value) {?>
-
+                  foreach ($result as $value) { ?>
                     <?php
                       $pStmt = $pdo->prepare("SELECT * FROM products WHERE id=".$value['product_id']);
                       $pStmt->execute();
@@ -76,7 +73,7 @@ if ($_SESSION['role'] != 1) {
                 <td><?php echo escape($pResult[0]['name']);?></td>
                 <td><?php echo escape($value['quantity']);?></td>
                 <td><?php echo escape(date('Y-m-d',strtotime($value['order_date'])));?></td>
-             </tr>
+              </tr>
               <?php
               $i++;
                   }
