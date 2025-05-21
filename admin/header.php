@@ -11,20 +11,55 @@
 
   <title>KKZY-SHOOPING | Starter</title>
 
-  <!-- Font Awesome Icons -->
+
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+
 </head>
 <style media="screen">
   .logout{
     border-radius:200px;
   }
+
+  .dropbtn {
+    border:none;
+    background:none;
+    color:white;
+    margin-left:20px;
+    margin-top:10px;
+
+}
+
+
+.dropdown-content {
+  display: none;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+  background-color:gray;
+  border-radius:10px;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+
+}
 </style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -49,7 +84,7 @@
 
      ?>
 
-     <?php if ($page != 'order_list.php') {?> 
+     <?php if ($page != 'order_list.php' && $page != 'weekly_report.php' && $page != 'monthlt_report.php' && $page != 'royal_user.php' && $page != 'best_seller.php') {?>
        <form class="form-inline ml-3" method="post"
 
        <?php if($page == 'product.php') :?>
@@ -80,9 +115,9 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">Blog Panel</span>
+      <!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8"> -->
+      <span class="brand-text font-weight-light ms-5">Shoping Panel</span>
     </a>
 
     <!-- Sidebar -->
@@ -144,6 +179,33 @@
               </p>
             </a>
           </li>
+
+          <div class="dropdown">
+              <div class="">
+                <a class="dropbtn d-flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-calendar-minus-fill ms-1" viewBox="0 0 16 16">
+                    <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M6 10h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1"/>
+                  </svg>
+                  <p class="ms-3">Reports</p>
+                </a>
+              </div>
+            <div class="dropdown-content">
+            <a href="weekly_report.php">
+              <p>Weekly Reports</p>
+            </a>
+            <a href="monthly_report.php" class="mt-2">
+              <p>Monthly Reports</p>
+            </a>
+            </a>
+            <a href="royal_user.php" class="mt-2">
+              <p>Royal Customers</p>
+            </a>
+            <a href="best_seller.php" class="mt-2">
+              <p>Best Seller Item</p>
+            </a>
+           </div>
+          </div>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

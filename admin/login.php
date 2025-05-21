@@ -1,5 +1,6 @@
 <?php
 session_start();
+
   require '../config/config.php';
   require '../config/common.php';
 
@@ -19,8 +20,8 @@ session_start();
         if($password == $user['password']) {
           $_SESSION['user_id'] = $user['id'];
           $_SESSION['username'] = $user['name'];
-          $_SESSION['role'] = 1;
           $_SESSION['logged_in'] = time();
+          $_SESSION['role'] = 1;
 
           header('Location: index.php');
         }
@@ -60,9 +61,7 @@ session_start();
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-
       <form action="login.php" method="post">
-        <!-- <input name="_token" type="hidden" value="<?php echo $_SESSION['_token'];?>"> -->
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">

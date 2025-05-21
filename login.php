@@ -6,26 +6,37 @@
 
 
 		if ($_POST) {
-			$email = $_POST['name'];
-			$password = $_POST['password'];
+			if (empty($_POST['email']) || empty($_POST['password'])) {
+				if (empty($_POST['email'])) {
+					$emailError = "Email is required";
+				}
+				if (empty($_POST['password'])) {
+					$passwordError = "Password is required";
+				}
+			}else {
+				$email = $_POST['email'];
+				$password = $_POST['password'];
 
-			$stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
-			$stmt->execute(
-					array(':email'=>$email)
-			);
-			$user = $stmt->fetch(PDO::FETCH_ASSOC);
-			if (password_verify($password,$user['password'])) {
-				$_SESSION['user_id'] = $user['id'];
-				$_SESSION['username'] = $user['name'];
-				$_SESSION['logged'] = time();
+				$stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
+				$stmt->execute(
+						array(':email'=>$email)
+				);
+				$user = $stmt->fetch(PDO::FETCH_ASSOC);
+				if (password_verify($password,$user['password'])) {
+					$_SESSION['user_id'] = $user['id'];
+					$_SESSION['username'] = $user['name'];
+					$_SESSION['logged'] = time();
 
-				header("Location: index.php");
+					header("Location: index.php");
+				}
+				echo "<script>alert('Incorrect Credentials')</script>";
 			}
-			echo "<script>alert('Incorrect Credentials')</script>";
 		}
 	 ?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
+
+
 
 <head>
 	<!-- Mobile Specific Meta -->
@@ -121,15 +132,15 @@
 					<div class="login_form_inner mt-5">
 						<h3>Log in to enter</h3>
 
-						<form class="row login_form" action="index.php" method="post" id="contactForm" novalidate="novalidate">
+						<form class="row login_form" action="" method="post" id="contactForm" novalidate="novalidate">
 							<div class="col-md-12 form-group">
-								<input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+								<input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" style="<?php echo $emailError ? '' : 'border:1px solid red;'?>">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" style="<?php echo $passwordError ? '' : 'border:1px solid red;'?>">
 							</div>
 							<div class="col-md-12 form-group">
-								<a href="index.php"><button type="submit" value="submit" class="primary-btn">Log In</button></a>
+								<button type="submit" value="submit" class="primary-btn">Log In</button>
 							</div>
 						</form>
 					</div>
