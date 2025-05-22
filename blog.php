@@ -1,3 +1,7 @@
+<?php
+session_start();
+require 'Config/config.php';
+?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -29,6 +33,9 @@
     <link rel="stylesheet" href="css/ion.rangeSlider.css" />
     <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
     <link rel="stylesheet" href="css/main.css">
+    <script src="app.js" charset="utf-8"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -40,7 +47,7 @@
   				<div class="container">
   					<!-- Brand and toggle get grouped for better mobile display -->
   					<a class="navbar-brand logo_h" href="index.php"><h2>KKZY-SHOOPING</h2></a>
-  					<a href="blog.html" style="margin-left:600px; color:black;">Blog</a>
+  					<a href="blog.php" style="margin-left:600px; color:black;">Blog</a>
   					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
   					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
   						<span class="icon-bar"></span>
@@ -81,6 +88,13 @@
   	</header>
 	<!-- End Header Area -->
 
+
+  <?php
+    $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+   ?>
+
     <!-- Start Banner Area -->
     <section class="banner-area organic-breadcrumb">
         <div class="container">
@@ -99,54 +113,119 @@
     <section class="blog_area" style="margin-left:20px;">
         <div class="container mt-5">
             <div class="row">
-                <div class="col-6">
-                    <div class="">
-                        <article class="row blog_item">
-                            <div class="col-md-9">
-                                <div class="blog_post">
-                                    <img src="img/blog/main-blog/m-blog-2.jpg" alt="">
-                                    <div class="blog_details">
-                                        <a href="single-blog.html">
-                                            <h2>The Basics Of Buying A Telescope</h2>
-                                        </a>
-                                        <p>MCSE boot camps have its supporters and its detractors. Some people do not
-                                            understand why you should have to spend money on boot camp when you can get
-                                            the MCSE study materials yourself at a fraction.</p>
-                                        <a href="single-blog.html" class="white_bg_btn">View More</a>
+              <?php
+                if ($result) {
+                  $i = 1;
+                  foreach ($result as $value) {?>
+                    <div class="col-6">
+                        <div class="">
+                            <article class="row blog_item">
+                                <div class="col-md-9">
+                                    <div class="blog_post">
+                                        <img src="images/<?php echo $value['image'];?>" alt="" width="250px">
+                                        <div class="blog_details">
+                                            <a href="single-blog.html">
+                                                <h2><?php echo $value['title']; ?></h2>
+                                            </a>
+                                            <p><?php echo $value['description']; ?></p>
+                                            <a href="blogdetail.php?id=<?php echo $value['id']; ?>" class="white_bg_btn">View More</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-                      </div>
-                </div>
-
-                <div class="col-6">
-                    <div class="blog_left_sidebar">
-                        <article class="row blog_item">
-                            <div class="col-md-9">
-                                <div class="blog_post">
-                                    <img src="img/blog/main-blog/m-blog-2.jpg" alt="">
-                                    <div class="blog_details">
-                                        <a href="single-blog.html">
-                                            <h2>The Basics Of Buying A Telescope</h2>
-                                        </a>
-                                        <p>MCSE boot camps have its supporters and its detractors. Some people do not
-                                            understand why you should have to spend money on boot camp when you can get
-                                            the MCSE study materials yourself at a fraction.</p>
-                                        <a href="single-blog.html" class="white_bg_btn">View More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                      </div>
-                </div>
+                            </article>
+                          </div>
+                    </div>
+              <?php
+                $i++;
+              }
+            }
+               ?>
 
             </div>
         </div>
     </section>
 
-  <div class="sticky-top">
-    <a href="creat_new_blog.php"><button type="button" name="button" style="margin-left:1200px;">Creat Nwe Blog</button></a>
+
+    <?php
+
+    if ($_POST) {
+      if (empty($_POST['title'] OR empty($_POST['description']))) {
+        if (empty($_POST['title'])) {
+          $titleError = 'Title cannot be empty';
+        }
+        if (empty($_POST['description'])) {
+          $descriptionError = 'Description cannot be empty';
+        }
+      }else {
+          $image = $_POST['image'];
+          $title = $_POST['title'];
+          $description = $_POST['description'];
+          $stmt = $pdo->prepare("INSERT INTO posts(title,description,author_id,image) VALUES (:title,:description,:author_id,:image)");
+          $result = $stmt->execute(
+            array(':title'=>$title,':description'=>$description,'author_id'=>$_SESSION['user_id'],':image'=>$image)
+          );
+          if ($result) {
+            echo "<script>alert('Successfuly added');window.location.href='blog.php'</script>";
+          }
+        }
+      }
+
+     ?>
+
+
+  <div class="fixed-top" style="margin-top:700px; margin-left:90px;">
+    <button class="primary-btn" type="button" name="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="margin-left:1200px;">Creat New Blog</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top:130px;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="staticBackdropLabel">Creat New Blog</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="container">
+              <div class="card-header">
+                <h2></h2>
+              </div>
+                <form class="" action="" method="post" enctype="multipart/form-data">
+                  <label for=""><b>Enter Your Title</b></label><p style="color:red;"><?php echo empty($titleError) ? '' : $titleError;?></p>
+                  <input type="text" name="title" placeholder=" Title" class="form-control mt-2" value="">
+                  <label for="" class="mt-3"><b>Enter Your Description</b></label><p style="color:red;"><?php echo empty($desError) ? '' : $desError;?></p>
+                  <input type="text" name="description" value="" placeholder="Description" class="form-control mt-2">
+                  <!-- <input type="file" name="image" value="" class="form-control mt-2"> -->
+                  <label for="" class="mt-3"><b>Enter Your option</b></label><p style="color:red;"><?php echo empty($imageError) ? '' : $imageError; ?></p>
+                  <div class=" mt-3 mb-3">
+                     <?php
+                       $catStmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC");
+                       $catStmt->execute();
+                       $catResult = $catStmt->fetchAll();
+                      ?>
+                    <select name="image" class="form-control">
+                      <option value="">Select</option>
+                      <?php foreach ($catResult as $value) {?>
+                        <option value="<?php echo $value['image'];?>"><?php echo $value['name'];?></option>
+                      <?php } ?>
+                    </select>
+
+                  </div>
+<br>
+                <div class="row mt-5">
+                  <div class="">
+                    <button type="submit" name="button" class="form-control primary-btn" style="border:none; background-color:orange; padding-left:10px;padding-right:10px; border-radius:10px; color:white;">Submit</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary primary-btn" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 <br><br><br><br>
