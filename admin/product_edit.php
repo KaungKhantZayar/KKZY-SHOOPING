@@ -58,7 +58,7 @@ include 'header.php';
           );
 
           if ($result) {
-            echo "<script>alert('Product is updated');window.location.href='index.php';</script>";
+              echo "<script>alert('Product is updated');window.location.href='index.php';</script>";
           }
         }
       }else {
